@@ -6,7 +6,7 @@ import {PugAdapterProvider} from '../../adapters';
 import {HandlebarsAdapterProvider} from '../../adapters/handblears.adapter';
 import {MailerComponent} from '../../component';
 import {MailerBindings} from '../../keys';
-import {MailerService} from '../../services/mailer.service';
+import {MailerService} from '../../services';
 
 describe('MailerComponent', () => {
   let app: Application;
