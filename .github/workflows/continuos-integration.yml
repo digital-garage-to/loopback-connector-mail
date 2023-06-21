@@ -1,0 +1,79 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * 1' # At 02:00 on Monday
+
+jobs:
+  test:
+    name: Test
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x, 18.x, 20.x]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Bootstrap project
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Run tests
+        run: npm run test:ci
+      - name: Run coverage
+        run: npm run coverage:ci
+      - name: Coveralls
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '14.x'
+        uses: coverallsapp/github-action@1.1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  code-lint:
+    name: Code Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Bootstrap project
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Verify code linting
+        run: npm run lint
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: [test, code-lint]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+      - name: Bootstrap project
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Publish package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release

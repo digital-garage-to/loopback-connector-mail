@@ -1,0 +1,83 @@
+{
+  "name": "@digitalgarage/loopback4-mailer",
+  "version": "0.0.0",
+  "description": "A Loopback 4 extension for Nodemail integration",
+  "keywords": [
+    "loopback-4",
+    "loopback-extension",
+    "loopback-next",
+    "mailer",
+    "nodemailer",
+    "smtp",
+    "ses"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": "16 || 18 || 19"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "lint": "npm run eslint && npm run prettier:check",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "test:ci": "node ./node_modules/@loopback/build/bin/run-nyc lb-mocha \"dist/__tests__\"",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "rebuild": "npm run clean && npm run build",
+    "coverage:ci": "node ./node_modules/@loopback/build/bin/run-nyc report --reporter=lcov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digital-garage-to/loopback4-mailer"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Matteo Padovano <mrbatista@users.noreply.github.com>",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "*"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "nodemailer": "^6.9.3",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^9.0.10",
+    "@loopback/core": "^4.0.10",
+    "@loopback/eslint-config": "^13.0.10",
+    "@loopback/testlab": "^5.0.10",
+    "@semantic-release/git": "^10.0.1",
+    "@types/node": "^14.18.42",
+    "@types/nodemailer": "^6.4.8",
+    "@types/preview-email": "^3.0.1",
+    "@types/pug": "^2.0.6",
+    "eslint": "^8.38.0",
+    "get-stream": "^6.0.1",
+    "handlebars": "^4.7.7",
+    "pug": "^3.0.2",
+    "source-map-support": "^0.5.21",
+    "typescript": "~4.9.5"
+  },
+  "optionalDependencies": {
+    "handlebars": "^4.7.7",
+    "preview-email": "^3.0.17",
+    "pug": "^3.0.2"
+  }
+}
