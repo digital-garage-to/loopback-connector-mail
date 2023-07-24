@@ -56,7 +56,10 @@
   "dependencies": {
     "debug": "^4.3.4",
     "nodemailer": "^6.9.3",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "@types/nodemailer": "^6.4.8",
+    "@types/preview-email": "^3.0.1",
+    "@types/pug": "^2.0.6"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.10",
@@ -65,9 +68,6 @@
     "@loopback/testlab": "^5.0.10",
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^14.18.42",
-    "@types/nodemailer": "^6.4.8",
-    "@types/preview-email": "^3.0.1",
-    "@types/pug": "^2.0.6",
     "eslint": "^8.38.0",
     "get-stream": "^6.0.1",
     "handlebars": "^4.7.7",
